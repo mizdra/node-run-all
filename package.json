@@ -1,13 +1,7 @@
 {
-  "name": "node-run-all",
+  "name": "@mizdra/node-run-all",
   "version": "0.0.0",
   "type": "module",
-  "engines": {
-    "node": "^20.11.0 || ^21.2.0 || >=22.0.0"
-  },
-  "bin": {
-    "node-run-all": "bin/node-run-all"
-  },
   "scripts": {
     "install": "scripts/install.js",
     "build": "cargo build --release"
@@ -16,6 +10,20 @@
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
   "description": "",
+  "engines": {
+    "node": "^20.11.0 || ^21.2.0 || >=22.0.0"
+  },
+  "bin": {
+    "node-run-all": "bin/node-run-all"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "target/release/node-run-all",
+    "scripts/install.js"
+  ],
   "devDependencies": {
     "@types/node": "^20.12.8"
   }
