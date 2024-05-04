@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha.1",
   "type": "module",
   "scripts": {
-    "install": "scripts/install.js",
+    "install": "node scripts/install.js",
     "build": "cargo build --release"
   },
   "keywords": [],
