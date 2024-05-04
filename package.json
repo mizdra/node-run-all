@@ -10,6 +10,10 @@
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mizdra/node-run-all.git"
+  },
   "engines": {
     "node": "^20.11.0 || ^21.2.0 || >=22.0.0"
   },
@@ -21,11 +25,12 @@
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
-    "target/x86_64-pc-windows-gnu/release/node-run-all.exe",
-    "target/aarch64-apple-darwin/release/node-run-all",
+    "dist",
     "scripts/install.js"
   ],
   "devDependencies": {
-    "@types/node": "^20.12.8"
+    "@types/node": "^20.12.8",
+    "can-npm-publish": "^1.3.6",
+    "semver": "^7.6.0"
   }
 }

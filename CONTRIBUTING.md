@@ -34,12 +34,5 @@ This is a guide for contributors.
     npm version prerelease
     ```
 - ```bash
-  npm publish
-  ```
-  - If you want to publish a pre-release version, use the following command instead:
-    ```bash
-    npm publish --tag=<alpha|beta>
-    ```
-- ```bash
   git push --follow-tags
   ```
