@@ -1,10 +1,30 @@
 name: Release
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
 
+# Inspired by https://github.com/biomejs/biome/blob/f3a651dc9b92132a29f53d57d0c9a192f586b4ed/.github/workflows/release_cli.yml
 jobs:
+  check:
+    name: Check if releasing is needed
+    runs-on: ubuntu-latest
+    outputs:
+      prerelease: ${{ steps.check_if_prerelease.outputs.PRELEASE }}
+      can_publish: ${{ steps.can_npm_publish.outputs.CAN_NPM_PUBLISH }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Can npm publish
+        id: can_npm_publish
+        run: |
+          npm i -g can-npm-publish
+          echo "CAN_NPM_PUBLISH=$(can-npm-publish && echo true || echo false)" >> $GITHUB_OUTPUT
+      - name: Check if prerelease
+        id: check_if_prerelease
+        run: |
+          npm i -g not-prerelease
+          echo "PRELEASE=$(is-prerelease && echo true || echo false)" >> $GITHUB_OUTPUT
+
   build:
     strategy:
       matrix:
@@ -34,17 +54,14 @@ jobs:
             target: aarch64-apple-darwin
             code-target: darwin-arm64
 
-    name: Package ${{ matrix.code-target }}
+    name: Build ${{ matrix.code-target }} binary
     runs-on: ${{ matrix.os }}
+    needs: check
+    if: needs.check.outputs.can_publish == 'true'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: Install Rust toolchain
         run: rustup target add ${{ matrix.target }}
@@ -98,3 +115,38 @@ jobs:
           name: node-run-all-${{ matrix.target }}
           path: ./dist/node-run-all-*
           if-no-files-found: error
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    needs:
+      - check
+      - build
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: node-run-all-*
+          merge-multiple: true
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Publish npm packages as latest
+        run: npm publish $package --access public --provenance
+        if: needs.check.outputs.prerelease != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish npm packages as nightly
+        run: npm publish $package --tag prerelease --access public --provenance
+        if: needs.check.outputs.prerelease == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
