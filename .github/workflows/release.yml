@@ -1,0 +1,100 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-2022
+            target: x86_64-pc-windows-msvc
+            code-target: win32-x64
+          - os: windows-2022
+            target: aarch64-pc-windows-msvc
+            code-target: win32-arm64
+          - os: ubuntu-20.04
+            target: x86_64-unknown-linux-gnu
+            code-target: linux-x64
+          - os: ubuntu-20.04
+            target: aarch64-unknown-linux-gnu
+            code-target: linux-arm64
+          - os: ubuntu-20.04
+            target: x86_64-unknown-linux-musl
+            code-target: linux-x64-musl
+          - os: ubuntu-20.04
+            target: aarch64-unknown-linux-musl
+            code-target: linux-arm64-musl
+          - os: macos-11
+            target: x86_64-apple-darwin
+            code-target: darwin-x64
+          - os: macos-11
+            target: aarch64-apple-darwin
+            code-target: darwin-arm64
+
+    name: Package ${{ matrix.code-target }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rust toolchain
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Install arm64 toolchain
+        if: matrix.code-target == 'linux-arm64' || matrix.code-target == 'linux-arm64-musl'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Install musl toolchain
+        if: matrix.code-target == 'linux-x64-musl' || matrix.code-target == 'linux-arm64-musl'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+
+      - name: Audit crates.io dependencies
+        if: matrix.code-target == 'linux-x64'
+        run: cargo audit
+
+      - name: Set jemalloc page size for linux-arm64
+        if: matrix.code-target == 'linux-arm64'
+        run: |
+          echo "JEMALLOC_SYS_WITH_LG_PAGE=16" >> $GITHUB_ENV
+
+      # Build the binary
+      - name: Build binary
+        run: cargo build --release --target ${{ matrix.target }}
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_LINKER: aarch64-linux-gnu-gcc
+          # Strip all debug symbols from the resulting binaries
+          RUSTFLAGS: "-C strip=symbols"
+
+      # Copy the binary and rename it to include the name of the target platform
+      - name: Copy binary for Windows
+        if: matrix.os == 'windows-2022'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.target }}/release/node-run-all.exe ./dist/node-run-all-${{ matrix.code-target }}.exe
+      - name: Copy binary for non-Windows
+        if: matrix.os != 'windows-2022'
+        run: |
+          mkdir dist
+          cp target/${{ matrix.target }}/release/node-run-all ./dist/node-run-all-${{ matrix.code-target }}
+
+      # Upload the binary as a build artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-run-all-${{ matrix.target }}
+          path: ./dist/node-run-all-*
+          if-no-files-found: error
