@@ -1,0 +1,5 @@
+This is a dummy file. npm will not create `node_modules/.bin/node-run-all`
+if the file specified by the bin option in `package.json` (`bin/node-run-all`) is missing.
+
+Therefore, by putting this dummy file in place, it prompts npm to create `node_modules/.bin/node-run-all`.
+This file will eventually be overwritten by a install script(`scripts/install.js`) in `dist/node-run-all-*`.

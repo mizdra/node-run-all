@@ -24,6 +24,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
+    "bin",
     "dist",
     "scripts/install.js"
   ],
