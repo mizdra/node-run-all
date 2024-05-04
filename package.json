@@ -1,0 +1,22 @@
+{
+  "name": "node-run-all",
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": "^20.11.0 || ^21.2.0 || >=22.0.0"
+  },
+  "bin": {
+    "node-run-all": "bin/node-run-all"
+  },
+  "scripts": {
+    "install": "scripts/install.js",
+    "build": "cargo build --release"
+  },
+  "keywords": [],
+  "author": "mizdra <pp.mizdra@gmail.com>",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.12.8"
+  }
+}
