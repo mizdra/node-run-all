@@ -1,6 +1,6 @@
 {
   "name": "@mizdra/node-run-all",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "type": "module",
   "scripts": {
     "install": "scripts/install.js",
