@@ -21,7 +21,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
-    "target/release/node-run-all",
+    "target/x86_64-pc-windows-gnu/release/node-run-all.exe",
+    "target/aarch64-apple-darwin/release/node-run-all",
     "scripts/install.js"
   ],
   "devDependencies": {
