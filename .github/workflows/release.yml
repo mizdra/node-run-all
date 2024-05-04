@@ -21,7 +21,7 @@ jobs:
       - run: npm i
       - name: Can npm publish
         id: can_npm_publish
-        run: echo "CAN_NPM_PUBLISH=$(can-npm-publish && echo true || echo false)" >> $GITHUB_OUTPUT
+        run: echo "CAN_NPM_PUBLISH=$(npx can-npm-publish && echo true || echo false)" >> $GITHUB_OUTPUT
       - name: Get release tag
         id: release_tag
         run: echo "RELEASE_TAG=$(node scripts/get-release-tag.js)" >> $GITHUB_OUTPUT
