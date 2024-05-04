@@ -112,6 +112,11 @@ jobs:
           merge-multiple: true
           path: dist
 
+      # ref: https://github.com/actions/upload-artifact#permission-loss
+      - name: Restore permissions
+        run: |
+          chmod 755 dist/node-run-all-*
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20

@@ -56,5 +56,4 @@ if (process.platform === "win32") {
   await cp(join(rootDirPath, `dist/${binPath}`), join(rootDirPath, "bin/node-run-all.exe"));
 } else {
   await cp(join(rootDirPath, `dist/${binPath}`), join(rootDirPath, "bin/node-run-all"));
-  await chmod(join(rootDirPath, "bin/node-run-all"), 0o755);
 }
