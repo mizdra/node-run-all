@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { cp } from "fs/promises";
 import { join } from "path";
 
