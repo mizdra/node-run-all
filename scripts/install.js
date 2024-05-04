@@ -1,7 +1,11 @@
 import { cp } from "fs/promises";
 import { join } from "path";
 
-const binarySrcPath = join(import.meta.dirname, "../target/release/node-run-all");
-const binaryDistPath = join(import.meta.dirname, "../bin/node-run-all");
+const rootDirPath = join(import.meta.dirname, "..");
+const binaryDistPath = join(rootDirPath, "bin/node-run-all");
 
-await cp(binarySrcPath, binaryDistPath);
+if (process.platform === "win32") {
+  await cp(join(rootDirPath, 'target/x86_64-pc-windows-gnu/release/node-run-all.exe'), binaryDistPath);
+} else if (process.platform === "darwin") {
+  await cp(join(rootDirPath, 'target/aarch64-apple-darwin/release/node-run-all'), binaryDistPath);
+}

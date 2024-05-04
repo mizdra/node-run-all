@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "install": "node scripts/install.js",
-    "build": "cargo build --release"
+    "build": "cargo build --target=aarch64-apple-darwin --target=x86_64-pc-windows-gnu --release"
   },
   "keywords": [],
   "author": "mizdra <pp.mizdra@gmail.com>",
