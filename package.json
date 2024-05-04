@@ -14,7 +14,7 @@
     "node": "^20.11.0 || ^21.2.0 || >=22.0.0"
   },
   "bin": {
-    "node-run-all": "bin/node-run-all.exe"
+    "node-run-all": "bin/node-run-all"
   },
   "publishConfig": {
     "access": "public",
