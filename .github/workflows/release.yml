@@ -123,7 +123,7 @@ jobs:
           cache: "npm"
           registry-url: "https://registry.npmjs.org"
 
-      - run: npm i
+      - run: npm i --ignore-scripts
 
       - name: Get release tag
         id: release_tag
