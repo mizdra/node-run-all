@@ -6,26 +6,6 @@ on:
 
 # Inspired by https://github.com/biomejs/biome/blob/f3a651dc9b92132a29f53d57d0c9a192f586b4ed/.github/workflows/release_cli.yml
 jobs:
-  check:
-    name: Check if releasing is needed
-    runs-on: ubuntu-latest
-    outputs:
-      can_publish: ${{ steps.can_npm_publish.outputs.CAN_NPM_PUBLISH }}
-      release_tag: ${{ steps.release_tag.outputs.RELEASE_TAG }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-      - run: npm i
-      - name: Can npm publish
-        id: can_npm_publish
-        run: echo "CAN_NPM_PUBLISH=$(npx can-npm-publish && echo true || echo false)" >> $GITHUB_OUTPUT
-      - name: Get release tag
-        id: release_tag
-        run: echo "RELEASE_TAG=$(node scripts/get-release-tag.js)" >> $GITHUB_OUTPUT
-
   build:
     strategy:
       matrix:
@@ -57,8 +37,6 @@ jobs:
 
     name: Build ${{ matrix.code-target }} binary
     runs-on: ${{ matrix.os }}
-    needs: check
-    if: needs.check.outputs.can_publish == 'true'
 
     steps:
       - uses: actions/checkout@v4
@@ -120,7 +98,6 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     needs:
-      - check
       - build
     permissions:
       contents: write
@@ -141,7 +118,13 @@ jobs:
           cache: "npm"
           registry-url: "https://registry.npmjs.org"
 
+      - run: npm i
+
+      - name: Get release tag
+        id: release_tag
+        run: echo "RELEASE_TAG=$(node scripts/get-release-tag.js)" >> $GITHUB_OUTPUT
+
       - name: Publish npm packages as latest
-        run: npm publish --provenance --tag ${{ needs.check.outputs.release_tag }}
+        run: npx can-npm-publish && npm publish --provenance --tag ${{ steps.release_tag.outputs.RELEASE_TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

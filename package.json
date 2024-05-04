@@ -3,8 +3,7 @@
   "version": "0.0.1-alpha.11",
   "type": "module",
   "scripts": {
-    "install": "node scripts/install.js",
-    "build": "cargo build --target=aarch64-apple-darwin --target=x86_64-pc-windows-gnu --release"
+    "install": "node scripts/install.js"
   },
   "keywords": [],
   "author": "mizdra <pp.mizdra@gmail.com>",
