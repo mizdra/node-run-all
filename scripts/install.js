@@ -1,7 +1,9 @@
+// @ts-check
+
 // Inspired by https://github.com/biomejs/biome/blob/f77ab54b7d5ab3f84a28def1e897b94107a9d16f/packages/%40biomejs/biome/bin/biome
 
 import { execSync } from "child_process";
-import { chmod, cp } from "fs/promises";
+import { cp } from "fs/promises";
 import { join } from "path";
 
 const rootDirPath = join(import.meta.dirname, "..");

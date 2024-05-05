@@ -3,24 +3,21 @@
 This is a guide for contributors.
 
 ## Requirements
-- rustc
-- Cargo
+
+- rustup
 - Node.js
 
 ## How to dev
 
-- `npm run build`: Build for production
-- `npm run lint`: Run static-checking
-- `npm run test`: Run tests
+- `cargo build`: Build for development
+- `cargo run`: Run for development
+- `cargo test`: Run tests
 
 ## How to release
 
 - Wait for passing CI...
 - ```bash
   git switch main && git pull
-  ```
-- ```bash
-  rm -rf target && npm run build
   ```
 - ```bash
   npm version <major|minor|patch>
@@ -36,3 +33,5 @@ This is a guide for contributors.
 - ```bash
   git push --follow-tags
   ```
+- Wait for the release workflow to finish...
+  - https://github.com/mizdra/node-run-all/actions/workflows/release.yml

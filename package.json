@@ -5,10 +5,10 @@
   "scripts": {
     "install": "node scripts/install.js"
   },
-  "keywords": [],
+  "keywords": ["npm-scripts", "task-runner", "npm-run-all"],
   "author": "mizdra <pp.mizdra@gmail.com>",
   "license": "MIT",
-  "description": "",
+  "description": "A CLI tool to run multiple npm-scripts in parallel or sequential like `npm-run-all`.",
   "repository": {
     "type": "git",
     "url": "https://github.com/mizdra/node-run-all.git"
