@@ -41,11 +41,11 @@ TODO
 
 ## Supported Features
 
-- [ ] `npm-run-all [tasks] [OPTIONS]` command
+- [ ] `node-run-all [tasks] [OPTIONS]` command
 - [ ] `run-s [tasks] [OPTIONS]` command
 - [ ] `run-p [tasks] [OPTIONS]` command
-- [ ] `-p, --parallel <tasks>` option for `npm-run-all` command
-- [ ] `-s, --sequential <tasks>, --serial <tasks>` option for `npm-run-all` command
+- [ ] `-p, --parallel <tasks>` option for `node-run-all` command
+- [ ] `-s, --sequential <tasks>, --serial <tasks>` option for `node-run-all` command
 - [ ] Glob-like pattern matching for script names
   - [ ] `*`
   - [ ] `**`
@@ -53,7 +53,7 @@ TODO
   - [ ] `{1}`, `{2}`, `{3}`, ...
   - [ ] `{@}`
   - [ ] `{*}`
-- [ ] `--max-parallel <number>` option for `npm-run-all` and `run-p` command
+- [ ] `--max-parallel <number>` option for `node-run-all` and `run-p` command
 - [ ] `-n, --print-name` option
 - [ ] `--silent` option
 
