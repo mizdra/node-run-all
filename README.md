@@ -66,6 +66,17 @@ Unlike `npm-run-all`, some features are not implemented for simplicity.
 - `--npm-path <string>` option
 - Node API
 
+## Limitations
+
+Since this tool is based on `node --run`, it inherits [the limitations of `node --run`](https://nodejs.org/docs/latest/api/cli.html#intentional-limitations).
+
+> - Searching for `package.json` files outside the current folder.
+> - Prepending the `.bin` or `node_modules/.bin` paths of folders outside the current folder.
+> - Running `pre` or `post` scripts in addition to the specified script.
+> - Defining package manager-specific environment variables.
+>
+(2024-05-05, [Command-line API | Node.js v22.1.0 Documentation](https://nodejs.org/docs/latest/api/cli.html#intentional-limitations))
+
 ## Benchmark
 
 TODO
